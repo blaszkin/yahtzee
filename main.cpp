@@ -135,6 +135,11 @@ int main()
             for (int l = 0; l < 5; l++)
             {
                     cin >> reroll;
+                    while(reroll!=0 and reroll!=1)
+                        {
+                            cout << "Invalid character. Try again: ";
+                            cin >> reroll;
+                        }
                     keepDice.push_back(reroll);
             }
         }
