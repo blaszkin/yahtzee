@@ -7,7 +7,7 @@
 
 using namespace std;
 
-vector<int> rollDice(vector<int> dice, bool keepDice[])
+void rollDice(vector<int> &dice, vector<bool> keepDice)
 {
     for (int i = 0; i < 5; i++)
     {
@@ -16,7 +16,6 @@ vector<int> rollDice(vector<int> dice, bool keepDice[])
             dice[i] = rand() % 6 + 1;
         }
     }
-    return dice;
 }
 
 int calculateScore(vector<int> dice, int category)
@@ -116,28 +115,30 @@ int main()
 {
     srand(chrono::system_clock::now().time_since_epoch().count());
     int categoryChoice = 1;
-    int scores[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    bool usedCategories[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    vector<int> scores = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    vector<bool> usedCategories = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     vector<int> dice = {0, 0, 0, 0, 0};
-    bool keepDice[5] = {0, 0, 0, 0, 0};
-    int diceSize = dice.size();
-    for (int i = 0; i < 13; i++)
+    vector<bool> keepDice = {0, 0, 0, 0, 0};
+    int reroll;
+    for (int i = 0; i < 13; i++) //13 - number of turns
     {
-        for (int j = 0; j < 2; j++)
+        for (int j = 0; j < 2; j++) // 2 - number of rerolls
         {
-            dice = rollDice(dice, keepDice);
+            rollDice(dice, keepDice);
             cout << "Your dice roll:";
             for (int k = 0; k < 5; k++)
             {
                 cout << " " << dice[k];
             }
             cout << "\nChoose which dice to keep: (1 - keep, 0 - reroll): ";
+            keepDice.clear();
             for (int l = 0; l < 5; l++)
             {
-                cin >> keepDice[l];
+                    cin >> reroll;
+                    keepDice.push_back(reroll);
             }
         }
-        dice = rollDice(dice, keepDice);
+        rollDice(dice, keepDice);
         cout << "Your dice:";
         for (int m = 0; m < 5; m++)
         {
@@ -145,7 +146,7 @@ int main()
         }
         cout << "\nChoose a scoring category (1-13):";
         cout << "\n+---------------------+----------------------------+-----------------+------------------+\n";
-        cout << "|     CATEGORY            |        DESCRIPTION         |   SCORING       | YOUR SCORE       |\n";
+        cout << "|     CATEGORY            |        DESCRIPTION         |   SCORING       | YOUR SCORE      \n";
         cout << "+-------------------------+----------------------------+-----------------+--------------+\n";
         cout << "| (1)Ones                 | Sum of all 1s              | 1 x number of 1s|        " << scores[0] << "         \n";
         cout << "| (2)Twos                 | Sum of all 2s              | 2 x number of 2s|        " << scores[1] << "         \n";
