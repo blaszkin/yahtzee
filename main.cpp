@@ -7,19 +7,21 @@
 
 using namespace std;
 
-vector<int> rollDice(vector<int> dice, bool keepDice[])
+void rollDices(std::vector<int>& dices, bool keepDice[])
 {
-    for (int i = 0; i < 5; i++)
+    for (auto& dice : dices)
     {
-        if (keepDice[i] == false)
-        {
-            dice[i] = rand() % 6 + 1;
-        }
+        if (not keepDice) 
+            rollDice(dice, keepDice)
     }
-    return dice;
 }
 
-int calculateScore(vector<int> dice, int category)
+void rollDice(int& dice, bool keepDice)
+{
+    dice = rand() % 6 + 1;
+}
+
+int calculateScore(const vector<int>& dice, int category) const
 {
     int score = 0;
     int counts[6];
@@ -33,18 +35,8 @@ int calculateScore(vector<int> dice, int category)
     }
     switch (category)
     {
-    case 1:
-        return counts[0];
-    case 2:
-        return counts[1] * 2;
-    case 3:
-        return counts[2] * 3;
-    case 4:
-        return counts[3] * 4;
-    case 5:
-        return counts[4] * 5;
-    case 6:
-        return counts[5] * 6;
+    case 1 ... 6:
+        return counts[category-1]*category;
     case 7:
         sort(counts, counts + 6);
         if (counts[5] < 3)
@@ -131,10 +123,12 @@ int main()
     vector<int> dice = {0, 0, 0, 0, 0};
     bool keepDice[5] = {0, 0, 0, 0, 0};
     int diceSize = dice.size();
-    for (int i = 0; i < 13; i++)
+    constexpr int numberOfTurns = 13;
+    for (int i = 0; i < numberOfTurns; i++)
     {
         for (int j = 0; j < 2; j++)
         {
+            
             dice = rollDice(dice, keepDice);
             cout << "Your dice roll:";
             for (int k = 0; k < 5; k++)
