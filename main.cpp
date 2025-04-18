@@ -33,18 +33,8 @@ int calculateScore(vector<int> dice, int category)
     }
     switch (category)
     {
-    case 1:
-        return counts[0];
-    case 2:
-        return counts[1] * 2;
-    case 3:
-        return counts[2] * 3;
-    case 4:
-        return counts[3] * 4;
-    case 5:
-        return counts[4] * 5;
-    case 6:
-        return counts[5] * 6;
+    case 1 ... 6:
+        return counts[category-1]*category;
     case 7:
         sort(counts, counts + 6);
         if (counts[5] < 3)
